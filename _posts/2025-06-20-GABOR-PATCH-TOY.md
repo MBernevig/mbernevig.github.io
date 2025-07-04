@@ -1,7 +1,7 @@
 ---
 title: Gabor Patch Toy
 description: A simple Godot project that guides users through the process of creating motion metamers using Gabor patches.
-date: 2025-07-04 00:00:00 +0800
+date: 2025-06-20 00:00:00 +0800
 categories: [Game Development, Godot]
 tags: [godot, gabor patch, motion metamers, computer graphics, foveated rendering, interactive]
 pin: true
