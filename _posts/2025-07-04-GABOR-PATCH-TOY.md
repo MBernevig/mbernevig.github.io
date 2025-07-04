@@ -23,7 +23,7 @@ This project serves as a complementary tool to the paper _"Towards Motion Metame
 
 This project guides users through the steps required to set up an illusion similar to that presented in the paper, only applied to a static image. I developed the project in Godot due to its lightweight yet powerful design, accessible scripting language, and its free and open-source nature.
 
-During my presentation of the paper in the *Computer Graphics and Visualization Seminar*, one key piece of positive feedback was how breaking the illusion into smaller, focused steps made the concepts and reasoning behind it easier to follow. This project is built around that idea, guiding users through a series of interactive scenes, each highlighting the effect of a specific parameter on Gabor patches.
+During my presentation of the paper in our university's CGV seminar, one key piece of positive feedback I received was how breaking the illusion into smaller, focused steps made the concepts and reasoning behind it easier to follow. This project is built around that idea, guiding users through a series of interactive scenes, each highlighting the effect of a specific parameter on Gabor patches.
 
 To keep the project manageable and interactive, I simplified certain aspects by reducing the complexity of the calculations or by allowing users to manually adjust values. These changes slightly weaken the resulting illusion of motion, but they enhance user understanding and engagement.
 
@@ -52,7 +52,7 @@ Godot bases itself on a scene system, where each scene can be thought of as a co
 7. **Combined Mode**  
    This scene showcases the illusion in full effect, while also giving the user control over all previously available parameters. Thus, the user can fine-tune the illusion to achieve and observe their desired effect.
 
-## Source Code
+### Source Code
 
 This project is open-source and available on my GitHub page: [Gabor Patch Toy](https://github.com/MBernevig/gabor_patch_toy).
 
