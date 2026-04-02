@@ -1,0 +1,70 @@
+#nodes-bg-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.9;
+}
+
+:root {
+  --glass-main-bg: rgba(255, 255, 255, 0.78);
+  --glass-side-bg: rgba(255, 255, 255, 0.3);
+  --glass-main-bg: color-mix(in srgb, var(--main-bg) 90%, transparent);
+  --glass-side-bg: color-mix(in srgb, var(--main-bg) 32%, transparent);
+}
+
+html,
+body {
+  background: transparent !important;
+}
+
+/* Keep content above canvas */
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Readable main content */
+main[aria-label="Main Content"] {
+  background: var(--glass-main-bg) !important;
+  border-radius: 14px;
+  padding: 0.75rem;
+}
+
+/* Lighter side surfaces so Voronoi remains visible */
+#sidebar,
+#topbar-wrapper,
+#panel-wrapper,
+#search-result-wrapper,
+#search-results,
+#toc-popup,
+footer,
+.post-tail-wrapper,
+.footer-wrapper,
+.pagination,
+.card,
+.card-wrapper,
+.post-preview {
+  background: var(--glass-side-bg) !important;
+  border-radius: 12px;
+}
+
+/* Remove top gap */
+main[aria-label="Main Content"] > *:first-child,
+#post-list {
+  margin-top: 0 !important;
+}
+
+@media (max-width: 768px) {
+  #nodes-bg-canvas {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #nodes-bg-canvas {
+    display: none;
+  }
+}
