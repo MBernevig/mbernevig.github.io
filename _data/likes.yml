@@ -1,0 +1,24 @@
+# Things I like — games, projects, and tools I genuinely enjoy.
+#
+# Add one entry per thing. Fields:
+#   name  (required) — what it is
+#   kind  (required) — a short label, e.g. Game / Tool / Engine / Project / Library
+#   note  (required) — a sentence or two on why you like it
+#   url   (optional) — link out; if set, the card becomes clickable
+#
+# These are STUBS — replace the notes with your own words (or delete/add freely).
+
+- name: Godot
+  kind: Engine
+  note: "STUB — say why you love working in it: lightweight, open-source, the scene system, GDScript…"
+  url: https://godotengine.org
+
+- name: Factorio
+  kind: Game
+  note: "STUB — a favourite game. What hooks you about it? The systems? The optimisation loop?"
+  url: https://www.factorio.com
+
+- name: Neovim
+  kind: Tool
+  note: "STUB — a tool you reach for daily. What makes it stick?"
+  url: https://neovim.io

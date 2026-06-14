@@ -1,0 +1,38 @@
+---
+layout: default
+---
+<main class="project">
+  <article class="section project__wrap">
+    <a class="project__back" href="{{ '/#work' | relative_url }}">
+      <span aria-hidden="true">←</span> Back to work
+    </a>
+
+    <header class="project__head">
+      {% if page.kind %}<p class="eyebrow">{{ page.kind }}</p>{% endif %}
+      <h1 class="project__title">{{ page.title }}</h1>
+      {% if page.blurb %}<p class="project__blurb">{{ page.blurb }}</p>{% endif %}
+
+      {% if page.tags %}
+      <ul class="tags project__tags">
+        {% for tag in page.tags %}<li>{{ tag }}</li>{% endfor %}
+      </ul>
+      {% endif %}
+
+      {% if page.repo or page.demo or page.external %}
+      <div class="project__links">
+        {% if page.demo %}<a class="btn btn--solid" href="{{ page.demo }}">Live demo <span aria-hidden="true">→</span></a>{% endif %}
+        {% if page.external %}<a class="btn btn--solid" href="{{ page.external }}">Visit <span aria-hidden="true">→</span></a>{% endif %}
+        {% if page.repo %}<a class="btn btn--ghost" href="{{ page.repo }}">Source</a>{% endif %}
+      </div>
+      {% endif %}
+    </header>
+
+    {% if page.cover %}
+    <img class="project__cover" src="{{ page.cover | relative_url }}" alt="{{ page.title }}">
+    {% endif %}
+
+    <div class="prose">
+      {{ content }}
+    </div>
+  </article>
+</main>

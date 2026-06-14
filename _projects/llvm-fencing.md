@@ -1,15 +1,12 @@
 ---
 title: Memory Fencing Optimization for LLVM
+blurb: An LLVM compiler pass that automatically inserts and optimizes memory fences, guaranteeing correctness for concurrent programs under the TSO and PSO relaxed memory models — formulated as a max-flow problem.
 description: An LLVM compiler pass implementing automated memory fence insertion and optimization for concurrent programs under relaxed memory models.
-date: 2025-04-15 00:00:00 +0800
-categories: [Compiler Design, Systems Programming]
-tags: [llvm, c++, concurrency, memory-models, compiler, optimization, tso, pso, maxflow]
-pin: false
-math: true
-mermaid: true
-# image:
-#   path: /assets/img/llvm-fencing/llvm-fence-cover.png
-#   alt: LLVM Memory Fencing Optimization
+kind: Compilers · Systems
+date: 2025-04-15
+order: 2
+tags: [LLVM, C++, Concurrency, Memory Models]
+repo: https://github.com/arg3t/cs4560_fencing
 ---
 
 ### Project Overview
