@@ -1,0 +1,150 @@
+---
+layout: default
+---
+<main>
+  <!-- ───────────────────────── Hero ───────────────────────── -->
+  <section class="hero">
+    <p class="eyebrow reveal">PORTFOLIO <span class="eyebrow__dot">/</span> TU DELFT <span class="eyebrow__dot">/</span> 2026</p>
+    <h1 class="hero__title reveal" style="--d:1">
+      <span class="hero__line">Mihnea</span>
+      <span class="hero__line hero__line--accent">Bernevig</span>
+    </h1>
+    <p class="hero__role reveal" style="--d:2">
+      CS Master's student · games, graphics &amp; systems
+    </p>
+    <p class="hero__tag reveal" style="--d:3">
+      I like making things you can see and use, overcomplicating things into microservices, and making things run well.
+    </p>
+    <div class="hero__cta reveal" style="--d:4">
+      <a class="btn btn--solid" href="#work">View work <span aria-hidden="true">→</span></a>
+      <a class="btn btn--ghost" href="{{ '/assets/files/mihnea_bernevig_cv.pdf' | relative_url }}">Download CV</a>
+    </div>
+    <ul class="hero__social reveal" style="--d:5">
+      <li><a href="https://github.com/mbernevig">GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/cocusai">LinkedIn</a></li>
+    </ul>
+    <div class="hero__scroll" aria-hidden="true">
+      <span>SCROLL</span>
+      <span class="hero__scroll-line"></span>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── About ──────────────────────── -->
+  <section class="section" id="about">
+    <div class="section__head reveal">
+      <span class="section__index">01</span>
+      <h2 class="section__title">About</h2>
+    </div>
+    <div class="about">
+      <p class="about__lead reveal">
+        I'm Mihnea, a Master's student in Computer Science at TU&nbsp;Delft, drawn to
+        problems where low-level systems meet what you can actually see and feel on
+        screen. Compilers and concurrency on one side, real-time graphics and games on
+        the other.
+      </p>
+      <div class="about__panel reveal">
+        <h3 class="about__panel-title">Focus areas</h3>
+        <ul class="chips">
+          <li>Game Development</li>
+          <li>Computer Graphics</li>
+          <li>Systems Programming</li>
+          <li>Compilers</li>
+          <li>Concurrency</li>
+          <li>Software Architecture</li>
+        </ul>
+        <h3 class="about__panel-title">Stack</h3>
+        <ul class="chips chips--muted">
+          <li>Rust</li>
+          <li>C++</li>
+          <li>LLVM</li>
+          <li>Godot</li>
+          <li>Docker</li>
+          <li>Kafka</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── Work ───────────────────────── -->
+  <section class="section" id="work">
+    <div class="section__head reveal">
+      <span class="section__index">02</span>
+      <h2 class="section__title">Selected work</h2>
+    </div>
+
+    <div class="work">
+      {% assign projects = site.projects | sort: 'order' %}
+      {% for project in projects %}
+        {% assign href = project.external | default: project.url %}
+        <a class="card reveal" href="{{ href | relative_url }}"{% if project.external %} target="_blank" rel="noopener"{% endif %}>
+          <div class="card__top">
+            <span class="card__no">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+            <span class="card__kind">{{ project.kind }}</span>
+          </div>
+          <h3 class="card__title">{{ project.title }}</h3>
+          <p class="card__desc">{{ project.blurb }}</p>
+          {% if project.tags %}
+          <ul class="tags">
+            {% for tag in project.tags %}<li>{{ tag }}</li>{% endfor %}
+          </ul>
+          {% endif %}
+          <span class="card__cta">
+            {% if project.external %}Visit project{% else %}Read the write-up{% endif %}
+            <span aria-hidden="true">→</span>
+          </span>
+        </a>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ──────────────────── Things I like ───────────────────── -->
+  <!--
+  <section class="section" id="likes">
+    <div class="section__head reveal">
+      <span class="section__index">03</span>
+      <h2 class="section__title">Things I like</h2>
+    </div>
+    <p class="likes__lead reveal">
+      A running list of games, projects, and tools I genuinely enjoy — the stuff that
+      shapes how I think about building things.
+    </p>
+    <div class="likes">
+      {% for like in site.data.likes %}
+        {% if like.url %}
+        <a class="like reveal" href="{{ like.url }}" target="_blank" rel="noopener">
+        {% else %}
+        <div class="like reveal">
+        {% endif %}
+          <div class="like__top">
+            <span class="like__kind">{{ like.kind }}</span>
+            {% if like.url %}<span class="like__arrow" aria-hidden="true">↗</span>{% endif %}
+          </div>
+          <h3 class="like__name">{{ like.name }}</h3>
+          <p class="like__note">{{ like.note }}</p>
+        {% if like.url %}</a>{% else %}</div>{% endif %}
+      {% endfor %}
+    </div>
+  </section>
+//-->
+  <!-- ─────────────────────── Contact ──────────────────────── -->
+  <section class="section section--contact" id="contact">
+    <div class="section__head reveal">
+      <span class="section__index">03</span>
+      <h2 class="section__title">Get in touch</h2>
+    </div>
+    <div class="contact reveal">
+      <p class="contact__lead">
+        Open to graphics / systems work, research collaborations, and
+        game projects. 
+      </p>
+      <a class="btn btn--solid btn--lg" href="https://www.linkedin.com/in/cocusai">
+        Message me on LinkedIn!
+      </a>
+      <ul class="contact__links">
+        <li><a href="https://github.com/mbernevig">GitHub</a></li>
+        <li><a href="https://www.linkedin.com/in/cocusai">LinkedIn</a></li>
+        <li><a class="js-email" href="https://www.linkedin.com/in/cocusai">Email</a></li>
+      </ul>
+    </div>
+  </section>
+</main>

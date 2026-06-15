@@ -1,16 +1,12 @@
 ---
-title: Digitalized Parliamentary Streaming Platform (DPSP)
+title: Digitalized Parliamentary Streaming Platform
+blurb: A microservice platform for streaming parliamentary sessions with live agendas and real-time transcripts, designed for transparency and public accessibility.
 description: A digital platform for streaming parliamentary sessions, designed to enhance transparency and accessibility in government proceedings.
-date: 2024-11-03 00:00:00 +0800
-categories: [Software Engineering, Software Architecture]
-tags: [rust, streaming, usability, microservices, backend, software architecture, docker, kafka]
-pin: false
-math: true
-mermaid: true
-# image:
-#   path: /commons/devices-mockup.png
-#   lqip: data:image/webp;base64,UklGRpoAAABXRUJQVlA4WAoAAAAQAAAADwAABwAAQUxQSDIAAAARL0AmbZurmr57yyIiqE8oiG0bejIYEQTgqiDA9vqnsUSI6H+oAERp2HZ65qP/VIAWAFZQOCBCAAAA8AEAnQEqEAAIAAVAfCWkAALp8sF8rgRgAP7o9FDvMCkMde9PK7euH5M1m6VWoDXf2FkP3BqV0ZYbO6NA/VFIAAAA
-#   alt: Responsive rendering of Chirpy theme on multiple devices.
+kind: Backend · Architecture
+date: 2024-11-03
+order: 3
+tags: [Rust, Microservices, Kafka, Docker]
+cover: /assets/img/dpsp/dpsp-architecture.png
 ---
 
 ### Project Overview
@@ -44,5 +40,3 @@ Aside from my involvement in the architecture design, I was responsible for impl
 The service is designed in a straightforward, yet modular manner, allowing for easy replacement of the transcription model in the future. 
 
 ![DPSP Transcription Service Diagram](/assets/img/dpsp/dpsp-transcription.png)
-
-

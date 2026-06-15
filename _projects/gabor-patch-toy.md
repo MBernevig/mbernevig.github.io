@@ -1,16 +1,13 @@
 ---
 title: Gabor Patch Toy
+blurb: An interactive Godot toy that walks you through building motion metamers from Gabor patches, a companion to research on foveated rendering and peripheral motion perception.
 description: A simple Godot project that guides users through the process of creating motion metamers using Gabor patches.
-date: 2025-06-20 00:00:00 +0800
-categories: [Game Development, Godot]
-tags: [godot, gabor patch, motion metamers, computer graphics, foveated rendering, interactive]
-pin: true
-math: true
-mermaid: true
-# image:
-#   path: /commons/devices-mockup.png
-#   lqip: data:image/webp;base64,UklGRpoAAABXRUJQVlA4WAoAAAAQAAAADwAABwAAQUxQSDIAAAARL0AmbZurmr57yyIiqE8oiG0bejIYEQTgqiDA9vqnsUSI6H+oAERp2HZ65qP/VIAWAFZQOCBCAAAA8AEAnQEqEAAIAAVAfCWkAALp8sF8rgRgAP7o9FDvMCkMde9PK7euH5M1m6VWoDXf2FkP3BqV0ZYbO6NA/VFIAAAA
-#   alt: Responsive rendering of Chirpy theme on multiple devices.
+kind: Godot · Graphics
+date: 2025-06-20
+order: 1
+featured: true
+tags: [Godot, Computer Graphics, Foveated Rendering, Interactive, Open Source]
+repo: https://github.com/MBernevig/gabor_patch_toy
 ---
 
 ### Project Overview
