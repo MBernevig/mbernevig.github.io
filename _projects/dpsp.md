@@ -1,6 +1,6 @@
 ---
 title: Digitalized Parliamentary Streaming Platform
-blurb: A microservice platform for streaming parliamentary sessions with live agendas and real-time transcripts — designed end-to-end for transparency and public accessibility.
+blurb: A microservice platform for streaming parliamentary sessions with live agendas and real-time transcripts, designed for transparency and public accessibility.
 description: A digital platform for streaming parliamentary sessions, designed to enhance transparency and accessibility in government proceedings.
 kind: Backend · Architecture
 date: 2024-11-03

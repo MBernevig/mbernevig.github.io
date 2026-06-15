@@ -1,11 +1,11 @@
 ---
 title: Memory Fencing Optimization for LLVM
-blurb: An LLVM compiler pass that automatically inserts and optimizes memory fences, guaranteeing correctness for concurrent programs under the TSO and PSO relaxed memory models — formulated as a max-flow problem.
+blurb: An LLVM compiler pass that automatically inserts and optimizes memory fences, guaranteeing correctness for concurrent programs under the TSO and PSO relaxed memory models, formulated as a max-flow problem.
 description: An LLVM compiler pass implementing automated memory fence insertion and optimization for concurrent programs under relaxed memory models.
 kind: Compilers · Systems
 date: 2025-04-15
 order: 2
-tags: [LLVM, C++, Concurrency, Memory Models]
+tags: [LLVM, C++, Concurrency, Memory Models, Open Source]
 repo: https://github.com/arg3t/cs4560_fencing
 ---
 
@@ -15,7 +15,7 @@ This project explores how compilers can automatically enforce memory consistency
 
 Modern CPUs often relax the order of reads and writes for performance reasons. While this improves efficiency, it can also break the assumptions made by programmers about how data is shared between threads. The goal of this project was to design an **LLVM compiler pass** that can automatically insert and optimize these fences, ensuring correctness under two key **relaxed memory models**: **Total Store Ordering (TSO)** and **Partial Store Ordering (PSO)**.
 
-The result is a sophisticated system that not only guarantees program correctness but also minimizes performance overhead by removing redundant fences using graph optimization techniques.
+The result is a system that guarantees program correctness while minimizing performance overhead by removing redundant fences using graph optimization techniques.
 
 ---
 
@@ -34,28 +34,26 @@ Each pass operates at the **LLVM Intermediate Representation (IR)** level, meani
 ### The Algorithmic Core
 
 The most interesting part of the project is the optimization phase.
-The idea is quite simple: represent the program's memory operations as a **directed graph**, where edges encode dependencies that must not be violated.
+The idea is simple: represent the program's memory operations as a **directed graph**, where edges encode dependencies that must not be violated.
 
 By applying a **Ford-Fulkerson max-flow algorithm**, the system computes a **minimum cut** that separates dependent operations.
 This cut corresponds to the optimal set of fences that must remain, meaning that all others can be safely removed.
 
 This approach ensures that the final program maintains the correct ordering of memory operations, but without redundant synchronization overhead.
-In other words, it achieves **the smallest number of fences necessary for correctness**.
 
 ---
 
 ### Testing and Validation
 
-To ensure that the passes behave as expected, I implemented a **litmus test suite**, a collection of small concurrent programs used to test memory consistency.
+To ensure that the passes behave as expected, we implemented a **litmus test suite**, a collection of small concurrent programs used to test memory consistency.
 
-These include classical concurrency patterns such as:
+These include concurrency patterns such as:
 
 * **Message Passing (MP)** - A producer-consumer synchronization test.
 * **Store Buffering (SB)** - A classic example of write-read reordering.
 * **Load Buffering (LB)** - Tests circular read dependencies.
 * **IRIW (Independent Reads of Independent Writes)** - Checks multi-reader consistency.
 
-Each test was run under both TSO and PSO configurations, confirming that the inserted fences restore sequentially consistent behavior when required.
 
 ---
 

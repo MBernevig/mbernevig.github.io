@@ -23,3 +23,21 @@
 
 	items.forEach((el) => observer.observe(el));
 })();
+
+// Email links: the address is assembled at runtime and never appears as a
+// literal string in the page source or this file, so naive scrapers (which
+// don't run JS) can't harvest it. Any link with class "js-email" gets a
+// working mailto: href on load. Keep a non-address visible label in the HTML.
+(() => {
+	const links = document.querySelectorAll('.js-email');
+	if (!links.length) return;
+
+	// Split into parts so the full address is never a single literal anywhere.
+	const user = ['mihnea', 'bernevig'].join('');
+	const domain = ['gmail', 'com'].join('.');
+	const addr = user + String.fromCharCode(64) + domain; // 64 = '@'
+
+	links.forEach((el) => {
+		el.setAttribute('href', 'mailto:' + addr);
+	});
+})();
