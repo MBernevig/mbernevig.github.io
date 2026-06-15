@@ -11,6 +11,7 @@
 	const STARS_DESKTOP = 160;
 	const STARS_MOBILE = 70;
 	const SHIP_SPEED = 1.0;
+	const TURN_RATE = 0.045; // max radians a ship can rotate per frame
 	const LASER_SPEED = 6.0;
 	const FIRE_COOLDOWN = 90; // frames between shots per ship
 	const FIRE_RANGE = 520; // px an enemy must be within to get shot at
@@ -19,6 +20,9 @@
 	const MAX_PARTICLES = 260;
 	const CURSOR_PARALLAX = 0.012; // how much stars drift toward the cursor
 	const CURVATURE = 0.16; // CRT barrel-distortion strength
+	const LASER_BURST = 1; // number of lasers fired in a single salvo
+	const BURST_GAP = 7; // frames between shots within a salvo
+	const LASER_LIFETIME = 90; // frames a laser lasts before vanishing
 
 	// Two warring factions, each gets a neon hue.
 	const palette = {
@@ -33,20 +37,16 @@
 		]
 	};
 
-	// Visible canvas (WebGL CRT output, or flat 2D fallback).
 	const canvas = document.createElement('canvas');
 	canvas.id = 'space-bg-canvas';
 	document.body.prepend(canvas);
 
-	// Offscreen canvas the 2D scene is drawn into.
 	const scene = document.createElement('canvas');
 	const ctx = scene.getContext('2d');
 	if (!ctx) {
 		return;
 	}
 
-	// Try to set up the WebGL CRT pass. If it fails, fall back to drawing the
-	// flat 2D scene straight onto the visible canvas.
 	const crt = setupCRT(canvas);
 	const useCRT = !!crt;
 	const drawTarget = useCRT ? scene : canvas;
@@ -64,6 +64,8 @@
 
 	const isMobile = () => window.innerWidth < 768;
 	const rand = (min, max) => Math.random() * (max - min) + min;
+	// Shortest signed angle from b to a, wrapped into [-PI, PI].
+	const angleDiff = (a, b) => Math.atan2(Math.sin(a - b), Math.cos(a - b));
 
 	const makeStar = () => ({
 		x: Math.random() * width,
@@ -78,6 +80,8 @@
 		angle: Math.random() * Math.PI * 2,
 		faction,
 		cooldown: Math.floor(Math.random() * FIRE_COOLDOWN),
+		burst: 0, // shots left in the current salvo
+		burstTimer: 0, // frames until the next shot in the salvo
 		turn: rand(-0.01, 0.01),
 		size: rand(9, 14)
 	});
@@ -135,6 +139,7 @@
 		let bestDist = Infinity;
 		for (const other of ships) {
 			if (other.faction === ship.faction) continue;
+
 			const dx = other.x - ship.x;
 			const dy = other.y - ship.y;
 			const dist = dx * dx + dy * dy;
@@ -146,41 +151,80 @@
 		return { enemy: best, dist: Math.sqrt(bestDist) };
 	};
 
+	// Angle to where the enemy *will* be when a bolt reaches it, assuming it
+	// keeps its current heading. Two refinement passes converge the intercept.
+	const leadAngle = (ship, enemy, dist) => {
+		const evx = Math.cos(enemy.angle) * SHIP_SPEED;
+		const evy = Math.sin(enemy.angle) * SHIP_SPEED;
+		let t = dist / LASER_SPEED;
+		for (let i = 0; i < 2; i += 1) {
+			const tx = enemy.x + evx * t;
+			const ty = enemy.y + evy * t;
+			t = Math.hypot(tx - ship.x, ty - ship.y) / LASER_SPEED;
+		}
+		return Math.atan2(enemy.y + evy * t - ship.y, enemy.x + evx * t - ship.x);
+	};
+
+	const fireLaser = (ship, angle) => {
+		const nose = ship.size + 4;
+		lasers.push({
+			x: ship.x + Math.cos(angle) * nose,
+			y: ship.y + Math.sin(angle) * nose,
+			vx: Math.cos(angle) * LASER_SPEED,
+			vy: Math.sin(angle) * LASER_SPEED,
+			faction: ship.faction,
+			color: palette.factions[ship.faction].laser,
+			life: LASER_LIFETIME
+		});
+	};
+
 	const updateShips = () => {
 		for (const ship of ships) {
-			ship.angle += ship.turn;
+			const { enemy, dist } = nearestEnemy(ship);
+
+			// Steer every frame toward the lead point, capped at TURN_RATE so it
+			// banks instead of snapping. Drift gently if there's no one to chase.
+			let aim = null;
+			if (enemy && dist < FIRE_RANGE) {
+				aim = leadAngle(ship, enemy, dist);
+				const diff = angleDiff(aim, ship.angle);
+				ship.angle += Math.max(-TURN_RATE, Math.min(TURN_RATE, diff));
+			} else {
+				if (Math.random() < 0.25) ship.turn = rand(-0.015, 0.015);
+				ship.angle += ship.turn;
+			}
+
 			ship.x = wrap(ship.x + Math.cos(ship.angle) * SHIP_SPEED, width);
 			ship.y = wrap(ship.y + Math.sin(ship.angle) * SHIP_SPEED, height);
 
-			if (Math.random() < 0.01) {
-				ship.turn = rand(-0.012, 0.012);
+			// A salvo already underway: keep loosing bolts on the burst cadence,
+			// re-aiming each shot so the train tracks the target.
+			if (ship.burst > 0) {
+				ship.burstTimer -= 1;
+				if (ship.burstTimer <= 0 && lasers.length < MAX_LASERS) {
+					fireLaser(ship, aim !== null ? aim : ship.angle);
+					ship.burst -= 1;
+					ship.burstTimer = BURST_GAP;
+					if (ship.burst === 0) {
+						ship.cooldown = FIRE_COOLDOWN + Math.floor(rand(-20, 40));
+					}
+				}
+				continue;
 			}
 
 			if (ship.cooldown > 0) {
 				ship.cooldown -= 1;
 				continue;
 			}
-
-			const { enemy, dist } = nearestEnemy(ship);
 			if (!enemy || dist > FIRE_RANGE) {
 				continue;
 			}
 
-			const aim = Math.atan2(enemy.y - ship.y, enemy.x - ship.x);
-			ship.angle = aim;
-			if (lasers.length < MAX_LASERS) {
-				const nose = ship.size + 4;
-				lasers.push({
-					x: ship.x + Math.cos(aim) * nose,
-					y: ship.y + Math.sin(aim) * nose,
-					vx: Math.cos(aim) * LASER_SPEED,
-					vy: Math.sin(aim) * LASER_SPEED,
-					faction: ship.faction,
-					color: palette.factions[ship.faction].laser,
-					life: 90
-				});
+			// In range and lined up: commit to a salvo. The block above fires it.
+			if (Math.abs(angleDiff(aim, ship.angle)) < 0.2) {
+				ship.burst = LASER_BURST;
+				ship.burstTimer = 0;
 			}
-			ship.cooldown = FIRE_COOLDOWN + Math.floor(rand(-20, 40));
 		}
 	};
 
@@ -217,8 +261,8 @@
 			const p = particles[i];
 			p.x += p.vx;
 			p.y += p.vy;
-			p.vx *= 0.96;
-			p.vy *= 0.96;
+			p.vx *= 1.0;
+			p.vy *= 1.0;
 			p.life -= p.decay;
 			if (p.life <= 0) {
 				particles.splice(i, 1);
